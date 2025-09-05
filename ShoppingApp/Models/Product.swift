@@ -6,3 +6,11 @@
 //
 
 import Foundation
+
+// MARK: - Product
+struct Product: Codable {
+    let id: Int
+    let title: String
+    let category: String
+    let image: String
+}

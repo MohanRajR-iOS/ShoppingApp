@@ -8,7 +8,7 @@
 import Foundation
 
 @Observable
- class UserViewModel {
+ class ProductsListViewModel {
     
      var productsList: [ProductObject]?
      var isLoading: Bool = true
@@ -30,7 +30,7 @@ import Foundation
         self.service = service
     }
     
-    @MainActor  func getAllProducts() async  {
+    func getAllProducts() async  {
         
         do {
             productsList = try await service.fetchProducts()

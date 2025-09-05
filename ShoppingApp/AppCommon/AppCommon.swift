@@ -6,3 +6,28 @@
 //
 
 import Foundation
+
+
+struct AppCommon {
+    
+    static let baseURL = "https://fakestoreapi.com"
+
+    struct Endpoints {
+        static let products = "/products"
+    }
+    
+    struct Error {
+        static let noProductsFound = "No products found"
+        static let defaultErrorMessage = "Something went wrong!!!"
+        static let unableToFetchData = "Unable to fetch data"
+       
+    }
+    
+    struct Images {
+        static let errorImage = "exclamationmark.triangle.fill"
+    }
+    
+    static let ProductListTitle = "Product List"
+    static let loading = "Loading..."
+
+}

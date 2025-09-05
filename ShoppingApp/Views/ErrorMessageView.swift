@@ -8,11 +8,21 @@
 import SwiftUI
 
 struct ErrorMessageView: View {
+    
+    var message: String
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        
+        VStack {
+            Image(systemName: AppCommon.Images.errorImage)
+                            .font(.largeTitle)
+                            .foregroundColor(.red)
+            Text(message)
+                .font(.title)
+        }
     }
 }
 
 #Preview {
-    ErrorMessageView()
+    ErrorMessageView(message: AppCommon.Error.noProductsFound)
 }
