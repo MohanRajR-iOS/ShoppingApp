@@ -10,6 +10,7 @@ import Foundation
 
 protocol ProductsServiceProtocol {
     func fetchProducts() async throws -> [ProductObject]?
+    func fetchProductDetail(productId: Int) async throws -> ProductDetailObject?
 }
 
 class ProductsServiceManager: ProductsServiceProtocol {
@@ -30,5 +31,18 @@ class ProductsServiceManager: ProductsServiceProtocol {
         guard let downloadedProducts: [Product] =  await apiService.downloadData(fromURL: AppCommon.baseURL + AppCommon.Endpoints.products) else { return nil }
         await DataBaseManager.shared.saveProductList(productList: downloadedProducts)
         return await DataBaseManager.shared.getAllProductList()
+    }
+    
+    func fetchProductDetail(productId: Int) async throws -> ProductDetailObject? {
+        
+        
+        if let product: ProductDetailObject = await DataBaseManager.shared.getProductDetail(productId: productId) {
+            return product
+        }
+        
+        let urlPath = String(format: AppCommon.baseURL + AppCommon.Endpoints.productWithId, "\(productId)")
+        guard let downloadedProduct: ProductDetail =  await apiService.downloadData(fromURL: urlPath) else {return nil}
+        await DataBaseManager.shared.saveProductDetail(detailObject: downloadedProduct)
+        return await DataBaseManager.shared.getProductDetail(productId: productId)
     }
 }

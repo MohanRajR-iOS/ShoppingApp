@@ -18,6 +18,7 @@ class DataBaseManager {
     
     private init() {
         let schema = Schema([ ProductObject.self,
+                              ProductDetailObject.self
                             ])
         self.sharedModelContainer = try? ModelContainer(for: schema)
     }
@@ -25,6 +26,7 @@ class DataBaseManager {
     var modelContext: ModelContext? {
         sharedModelContainer?.mainContext
     }
+    
     
     func saveProductList(productList: [Product]) async {
         
@@ -44,5 +46,27 @@ class DataBaseManager {
         }
         
         return products
+    }
+    
+    
+    
+    func saveProductDetail(detailObject: ProductDetail) {
+        
+        let itemToStore = ProductDetailObject(id: detailObject.id, title: detailObject.title, price: detailObject.price, summary: detailObject.description, category: detailObject.category, image: detailObject.image, rating: RatingObject(rate: detailObject.rating.rate, count: detailObject.rating.count))
+        modelContext?.insert(itemToStore)
+        try? modelContext?.save()
+    }
+    
+    func getProductDetail(productId: Int) -> ProductDetailObject? {
+        
+        let fetchDescriptor = FetchDescriptor<ProductDetailObject>(
+            predicate: #Predicate { $0.id == productId }
+        )
+        
+        guard let product = try? modelContext?.fetch(fetchDescriptor).first else {
+            return nil
+        }
+        
+        return product
     }
 }

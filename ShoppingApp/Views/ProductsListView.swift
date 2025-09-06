@@ -61,7 +61,7 @@ private func productListView(products: [ProductObject]) -> some View {
     }
     .navigationTitle(AppCommon.ProductListTitle)
     .navigationDestination(for: Int.self) { productID in
-        
+        ProductDetailView(productId: productID)
     }
 }
 
