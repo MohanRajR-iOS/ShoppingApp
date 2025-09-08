@@ -6,30 +6,70 @@
 //
 
 import XCTest
+@testable import ShoppingApp
 
 final class ProductDetailViewModelTests: XCTestCase {
+    
+    var viewModel: ProductDetailViewModel!
+    var mockService: MockProductsService!
 
-    override func setUpWithError() throws {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
+    override func setUp() {
+        super.setUp()
+        mockService = MockProductsService()
+        viewModel = ProductDetailViewModel(service: mockService)
+    }
+    
+    override func tearDown() {
+        viewModel = nil
+        mockService = nil
+        super.tearDown()
     }
 
-    override func tearDownWithError() throws {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
+    func testErrorMessage() {
+        // Check default error message
+        XCTAssertEqual(viewModel.errorMessage, AppCommon.Error.defaultErrorMessage)
+
+        // When there is an error
+        viewModel.error = NetworkError.badResponse
+        XCTAssertEqual(viewModel.errorMessage, AppCommon.Error.unableToFetchData)
     }
 
-    func testExample() throws {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
-        // Any test you write for XCTest can be annotated as throws and async.
-        // Mark your test throws to produce an unexpected failure when your test encounters an uncaught error.
-        // Mark your test async to allow awaiting for asynchronous code to complete. Check the results with assertions afterwards.
+    func testFetchProductDetailsSuccess() async {
+        
+        let mockProduct = ProductDetailObject(id: 222,
+                                              title: "Fjallraven - Foldsack No. 1 Backpack, Fits 15 Laptops",
+                                              price: 109.95,
+                                              summary: "Your perfect pack for everyday use and walks in the forest. Stash your laptop (up to 15 inches) in the padded sleeve, your everyday",
+                                              category: "men's clothing",
+                                              image: "https://fakestoreapi.com/img/81fPKd-2AYL._AC_SL1500_t.png",
+                                              rating: RatingObject(rate: 3.9, count: 120))
+        
+        
+        mockService.productDetail = mockProduct
+        viewModel = ProductDetailViewModel(service: mockService)
+        
+        await viewModel.getProductDetails(productId: 1)
+        
+        XCTAssertEqual(viewModel.productDetail?.id, mockProduct.id)
+        XCTAssertEqual(viewModel.productDetail?.title, mockProduct.title)
+        XCTAssertEqual(viewModel.productDetail?.price, mockProduct.price)
+        XCTAssertEqual(viewModel.productDetail?.summary, mockProduct.summary)
+        XCTAssertEqual(viewModel.productDetail?.category, mockProduct.category)
+        XCTAssertEqual(viewModel.productDetail?.image, mockProduct.image)
+        XCTAssertEqual(viewModel.productDetail?.rating.rate, mockProduct.rating.rate)
+        XCTAssertEqual(viewModel.productDetail?.rating.count, mockProduct.rating.count)
     }
 
-    func testPerformanceExample() throws {
-        // This is an example of a performance test case.
-        self.measure {
-            // Put the code you want to measure the time of here.
-        }
+    func testFetchProductDetailsFailure() async {
+        
+        mockService.shouldThrowError = true
+        viewModel = ProductDetailViewModel(service: mockService)
+        
+        await viewModel.getProductDetails(productId: 1)
+        
+        XCTAssertFalse(viewModel.isLoading)
+        XCTAssertNotNil(viewModel.error)
+        XCTAssertNil(viewModel.productDetail)
     }
 
 }

@@ -17,16 +17,16 @@ final class ProductsListViewModelTests: XCTestCase {
     var viewModel: ProductsListViewModel!
     var mockService: MockProductsService!
 
-    override func setUpWithError() throws {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
+    override func setUp() {
+        super.setUp()
         mockService = MockProductsService()
         viewModel = ProductsListViewModel(service: mockService)
     }
 
-    override func tearDownWithError() throws {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
+    override func tearDown() {
         viewModel = nil
         mockService = nil
+        super.tearDown()
     }
     
 
@@ -36,7 +36,7 @@ final class ProductsListViewModelTests: XCTestCase {
 
         // When there is an error
         viewModel.productsList = nil
-        viewModel.error = URLError(.badServerResponse)
+        viewModel.error = NetworkError.badResponse
         XCTAssertEqual(viewModel.errorMessage, AppCommon.Error.unableToFetchData)
 
         // When the products list is empty
@@ -56,6 +56,8 @@ final class ProductsListViewModelTests: XCTestCase {
         viewModel = ProductsListViewModel(service: mockService)
 
         await viewModel.getAllProducts()
+        
+        print(viewModel.productsList?.count ?? 0)
 
         XCTAssertFalse(viewModel.isLoading)
         XCTAssertNil(viewModel.error)

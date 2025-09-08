@@ -28,6 +28,7 @@ class DataBaseManager {
     }
     
     
+    // MARK: - Save Products
     func saveProductList(productList: [Product]) async {
         
         for product in productList {
@@ -37,6 +38,7 @@ class DataBaseManager {
         }
     }
     
+    // MARK: - Fetch Products
     func getAllProductList() async -> [ProductObject]? {
         
         let fetchDescriptor = FetchDescriptor<ProductObject>()
@@ -49,7 +51,7 @@ class DataBaseManager {
     }
     
     
-    
+    // MARK: - Save Product detail
     func saveProductDetail(detailObject: ProductDetail) {
         
         let itemToStore = ProductDetailObject(id: detailObject.id, title: detailObject.title, price: detailObject.price, summary: detailObject.description, category: detailObject.category, image: detailObject.image, rating: RatingObject(rate: detailObject.rating.rate, count: detailObject.rating.count))
@@ -57,6 +59,7 @@ class DataBaseManager {
         try? modelContext?.save()
     }
     
+    // MARK: - Fetch Product detail
     func getProductDetail(productId: Int) -> ProductDetailObject? {
         
         let fetchDescriptor = FetchDescriptor<ProductDetailObject>(

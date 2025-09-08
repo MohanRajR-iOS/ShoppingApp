@@ -28,7 +28,7 @@ class ProductsServiceManager: ProductsServiceProtocol {
             return products
         }
         
-        guard let downloadedProducts: [Product] =  await apiService.downloadData(fromURL: AppCommon.baseURL + AppCommon.Endpoints.products) else { return nil }
+        guard let downloadedProducts: [Product] =  try? await apiService.downloadData(fromURL: AppCommon.baseURL + AppCommon.Endpoints.products) else { return nil }
         await DataBaseManager.shared.saveProductList(productList: downloadedProducts)
         return await DataBaseManager.shared.getAllProductList()
     }
@@ -41,7 +41,7 @@ class ProductsServiceManager: ProductsServiceProtocol {
         }
         
         let urlPath = String(format: AppCommon.baseURL + AppCommon.Endpoints.productWithId, "\(productId)")
-        guard let downloadedProduct: ProductDetail =  await apiService.downloadData(fromURL: urlPath) else {return nil}
+        guard let downloadedProduct: ProductDetail =  try? await apiService.downloadData(fromURL: urlPath) else {return nil}
         await DataBaseManager.shared.saveProductDetail(detailObject: downloadedProduct)
         return await DataBaseManager.shared.getProductDetail(productId: productId)
     }

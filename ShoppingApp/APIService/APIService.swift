@@ -16,13 +16,13 @@ enum NetworkError: Error {
 
 protocol APIServiceProtocol {
     
-    func downloadData<T: Codable>(fromURL: String) async -> T?
+    func downloadData<T: Codable>(fromURL: String) async throws -> T?
 }
 
 
 class APIService: APIServiceProtocol {
     
-    func downloadData<T: Codable>(fromURL: String) async -> T? {
+    func downloadData<T: Codable>(fromURL: String) async throws -> T? {
             do {
                 guard let url = URL(string: fromURL) else {
                     throw NetworkError.badUrl
