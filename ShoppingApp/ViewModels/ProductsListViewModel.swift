@@ -29,6 +29,8 @@ import Foundation
     init(service: ProductsServiceProtocol = ProductsServiceManager()) {
         self.service = service
     }
+     
+     // MARK: - Get Products List from API
     
     func getAllProducts() async  {
         

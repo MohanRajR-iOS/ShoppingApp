@@ -22,6 +22,8 @@ class ProductsServiceManager: ProductsServiceProtocol {
         self.apiService = apiService
     }
     
+    // MARK: - Fetch Products List
+    
     func fetchProducts() async throws -> [ProductObject]? {
         
         if let products: [ProductObject] = await DataBaseManager.shared.getAllProductList(), products.count > 0 {
@@ -32,6 +34,8 @@ class ProductsServiceManager: ProductsServiceProtocol {
         await DataBaseManager.shared.saveProductList(productList: downloadedProducts)
         return await DataBaseManager.shared.getAllProductList()
     }
+    
+    // MARK: - Fetch product detail with product id
     
     func fetchProductDetail(productId: Int) async throws -> ProductDetailObject? {
         

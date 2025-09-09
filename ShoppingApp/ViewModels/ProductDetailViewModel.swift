@@ -28,6 +28,8 @@ class ProductDetailViewModel {
         self.service = service
     }
     
+    // MARK: - Get Product details from API
+    
       func getProductDetails(productId: Int) async  {
         
         do {
