@@ -8,7 +8,7 @@
 import Foundation
 
 
-struct AppCommon {
+struct AppConstants {
     
     static let baseURL = "https://fakestoreapi.com"
 

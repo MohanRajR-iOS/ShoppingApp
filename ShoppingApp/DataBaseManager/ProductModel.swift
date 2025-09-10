@@ -10,7 +10,7 @@ import SwiftData
 
 
 // MARK: - Product
-@Model final class ProductObject: Sendable {
+@Model final class ProductModel: Sendable {
     
     @Attribute(.unique)  var id: Int
     var title: String
