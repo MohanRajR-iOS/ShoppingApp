@@ -17,8 +17,8 @@ class DataBaseManager {
     let sharedModelContainer: ModelContainer?
     
     private init() {
-        let schema = Schema([ ProductObject.self,
-                              ProductDetailObject.self
+        let schema = Schema([ ProductModel.self,
+                              ProductDetailModel.self
                             ])
         self.sharedModelContainer = try? ModelContainer(for: schema)
     }
@@ -32,16 +32,16 @@ class DataBaseManager {
     func saveProductList(productList: [Product]) async {
         
         for product in productList {
-            let itemToStore = ProductObject(id: product.id, title: product.title, category: product.category, image: product.image)
+            let itemToStore = ProductModel(id: product.id, title: product.title, category: product.category, image: product.image)
             modelContext?.insert(itemToStore)
             try? modelContext?.save()
         }
     }
     
     // MARK: - Fetch Products
-    func getAllProductList() async -> [ProductObject]? {
+    func getAllProductList() async -> [ProductModel]? {
         
-        let fetchDescriptor = FetchDescriptor<ProductObject>()
+        let fetchDescriptor = FetchDescriptor<ProductModel>()
         
         guard let products = try? modelContext?.fetch(fetchDescriptor) else {
             return nil
@@ -54,15 +54,15 @@ class DataBaseManager {
     // MARK: - Save Product detail
     func saveProductDetail(detailObject: ProductDetail) {
         
-        let itemToStore = ProductDetailObject(id: detailObject.id, title: detailObject.title, price: detailObject.price, summary: detailObject.description, category: detailObject.category, image: detailObject.image, rating: RatingObject(rate: detailObject.rating.rate, count: detailObject.rating.count))
+        let itemToStore = ProductDetailModel(id: detailObject.id, title: detailObject.title, price: detailObject.price, summary: detailObject.description, category: detailObject.category, image: detailObject.image, rating: RatingModel(rate: detailObject.rating.rate, count: detailObject.rating.count))
         modelContext?.insert(itemToStore)
         try? modelContext?.save()
     }
     
     // MARK: - Fetch Product detail
-    func getProductDetail(productId: Int) -> ProductDetailObject? {
+    func getProductDetail(productId: Int) -> ProductDetailModel? {
         
-        let fetchDescriptor = FetchDescriptor<ProductDetailObject>(
+        let fetchDescriptor = FetchDescriptor<ProductDetailModel>(
             predicate: #Predicate { $0.id == productId }
         )
         

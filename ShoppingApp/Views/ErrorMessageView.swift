@@ -14,7 +14,7 @@ struct ErrorMessageView: View {
     var body: some View {
         
         VStack {
-            Image(systemName: AppCommon.Images.errorImage)
+            Image(systemName: AppConstants.Images.errorImage)
                             .font(.largeTitle)
                             .foregroundColor(.red)
             Text(message)
@@ -24,5 +24,5 @@ struct ErrorMessageView: View {
 }
 
 #Preview {
-    ErrorMessageView(message: AppCommon.Error.noProductsFound)
+    ErrorMessageView(message: AppConstants.Error.noProductsFound)
 }

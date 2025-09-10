@@ -11,14 +11,14 @@ struct ProductDetailView: View {
     
     var productId: Int
     
-    @State var productDetailViewModel = ProductDetailViewModel()
+    @StateObject var productDetailViewModel = ProductDetailViewModel()
     
     var body: some View {
         
         Group {
             
             if productDetailViewModel.isLoading {
-                ProgressView(label: { Text(AppCommon.loading) })
+                ProgressView(label: { Text(AppConstants.loading) })
             }else if let productDetail = productDetailViewModel.productDetail {
                 
                 ScrollView {
@@ -31,12 +31,12 @@ struct ProductDetailView: View {
                         ProductBottomView(price: productDetail.price)
                     }
                     .padding()
-                    .navigationTitle(AppCommon.ProductDetailTitle)
+                    .navigationTitle(AppConstants.ProductDetailTitle)
                     .navigationBarTitleDisplayMode(.inline)
                 }
                 
             }else {
-                ErrorMessageView(message: AppCommon.Error.unableToFetchData)
+                ErrorMessageView(message: AppConstants.Error.unableToFetchData)
             }
         }.onAppear{
             Task {
@@ -77,7 +77,7 @@ struct ProductHeaderView: View {
 
 struct ProductContentView: View {
     
-    let productDetail: ProductDetailObject
+    let productDetail: ProductDetailModel
     
     var body: some View {
         
@@ -86,7 +86,7 @@ struct ProductContentView: View {
                 Text(productDetail.category.capitalized)
                     .applyCustomModifier(font: .subheadline, foregroundColor: .gray)
                 Spacer()
-                Image(systemName: AppCommon.Images.ratingImage)
+                Image(systemName: AppConstants.Images.ratingImage)
                     .resizable()
                     .frame(width: 20, height: 20)
                     .foregroundColor(.yellow)
@@ -118,7 +118,7 @@ struct ProductBottomView: View {
         HStack {
             VStack(alignment: .leading) {
                 
-                Text(AppCommon.ProductTotalPrice)
+                Text(AppConstants.ProductTotalPrice)
                     .applyCustomModifier(font: .title3, foregroundColor: .gray)
                 
                 Text("$\(String(price))")
@@ -130,12 +130,12 @@ struct ProductBottomView: View {
                 showAlert = true
             }, label: {
                 HStack(spacing: 12) {
-                    Image(systemName: AppCommon.Images.cartImage)
+                    Image(systemName: AppConstants.Images.cartImage)
                         .resizable()
                         .frame(width: 25, height: 25)
                         .foregroundColor(.white)
                     
-                    Text(AppCommon.ProductAddCart)
+                    Text(AppConstants.ProductAddCart)
                         .applyCustomModifier(font: .title2, fontWeight: .medium, foregroundColor: .white)
                 }
                 .padding(.vertical, 15)
@@ -143,10 +143,10 @@ struct ProductBottomView: View {
                 .background(.blue)
                 .cornerRadius(20)
                 .shadow(color: .black.opacity(0.2), radius: 10, x: 0, y: -5)
-                .alert(AppCommon.ProductAddCart, isPresented: $showAlert) {
+                .alert(AppConstants.ProductAddCart, isPresented: $showAlert) {
 
                 } message: {
-                    Text(AppCommon.cartSuccessMessage)
+                    Text(AppConstants.cartSuccessMessage)
                 }
             })
         }

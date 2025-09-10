@@ -11,7 +11,7 @@ import SwiftData
 
 // MARK: - ProductDetailObject
 @Model
-final class ProductDetailObject: Sendable {
+final class ProductDetailModel: Sendable {
     
     @Attribute(.unique) var id: Int
     var title: String
@@ -20,9 +20,9 @@ final class ProductDetailObject: Sendable {
     var category: String
     var image: String
     
-    @Relationship(deleteRule: .cascade) var rating: RatingObject
+    @Relationship(deleteRule: .cascade) var rating: RatingModel
 
-    init(id: Int, title: String, price: Double, summary: String, category: String, image: String, rating: RatingObject) {
+    init(id: Int, title: String, price: Double, summary: String, category: String, image: String, rating: RatingModel) {
         self.id = id
         self.title = title
         self.price = price
@@ -35,7 +35,7 @@ final class ProductDetailObject: Sendable {
 
 // MARK: - RatingObject
 @Model
-final class RatingObject  {
+final class RatingModel  {
     
     var rate: Double
     var count: Int

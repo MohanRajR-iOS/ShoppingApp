@@ -7,20 +7,20 @@
 
 import Foundation
 
-@Observable
- class ProductsListViewModel {
+@MainActor
+class ProductsListViewModel: ObservableObject {
     
-     var productsList: [ProductObject]?
-     var isLoading: Bool = true
-     var error: Error?
+    @Published var productsList: [ProductModel]?
+    @Published var isLoading: Bool = true
+    @Published var error: Error?
     
     var errorMessage: String {
         if productsList?.isEmpty == true {
-            AppCommon.Error.noProductsFound
+            AppConstants.Error.noProductsFound
         } else if error != nil {
-            AppCommon.Error.unableToFetchData
+            AppConstants.Error.unableToFetchData
         } else {
-            AppCommon.Error.defaultErrorMessage
+            AppConstants.Error.defaultErrorMessage
         }
     }
     

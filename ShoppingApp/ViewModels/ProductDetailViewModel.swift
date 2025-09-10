@@ -7,18 +7,18 @@
 
 import Foundation
 
-@Observable
-class ProductDetailViewModel {
+@MainActor
+class ProductDetailViewModel: ObservableObject {
     
-     var productDetail: ProductDetailObject?
-     var isLoading: Bool = true
-     var error: Error?
+    @Published var productDetail: ProductDetailModel?
+    @Published var isLoading: Bool = true
+    @Published var error: Error?
     
     var errorMessage: String {
         if error != nil {
-            AppCommon.Error.unableToFetchData
+            AppConstants.Error.unableToFetchData
         } else {
-            AppCommon.Error.defaultErrorMessage
+            AppConstants.Error.defaultErrorMessage
         }
     }
     

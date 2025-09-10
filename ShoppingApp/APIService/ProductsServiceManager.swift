@@ -9,8 +9,8 @@ import Foundation
 
 
 protocol ProductsServiceProtocol {
-    func fetchProducts() async throws -> [ProductObject]?
-    func fetchProductDetail(productId: Int) async throws -> ProductDetailObject?
+    func fetchProducts() async throws -> [ProductModel]?
+    func fetchProductDetail(productId: Int) async throws -> ProductDetailModel?
 }
 
 class ProductsServiceManager: ProductsServiceProtocol {
@@ -24,13 +24,13 @@ class ProductsServiceManager: ProductsServiceProtocol {
     
     // MARK: - Fetch Products List
     
-    func fetchProducts() async throws -> [ProductObject]? {
+    func fetchProducts() async throws -> [ProductModel]? {
         
-        if let products: [ProductObject] = await DataBaseManager.shared.getAllProductList(), products.count > 0 {
+        if let products: [ProductModel] = await DataBaseManager.shared.getAllProductList(), products.count > 0 {
             return products
         }
         
-        guard let url = URL(string: AppCommon.baseURL + AppCommon.Endpoints.products) else {
+        guard let url = URL(string: AppConstants.baseURL + AppConstants.Endpoints.products) else {
             throw NetworkError.badUrl
         }
         
@@ -45,14 +45,14 @@ class ProductsServiceManager: ProductsServiceProtocol {
     
     // MARK: - Fetch product detail with product id
     
-    func fetchProductDetail(productId: Int) async throws -> ProductDetailObject? {
+    func fetchProductDetail(productId: Int) async throws -> ProductDetailModel? {
         
         
-        if let product: ProductDetailObject = await DataBaseManager.shared.getProductDetail(productId: productId) {
+        if let product: ProductDetailModel = await DataBaseManager.shared.getProductDetail(productId: productId) {
             return product
         }
         
-        let urlPath = String(format: AppCommon.baseURL + AppCommon.Endpoints.productWithId, "\(productId)")
+        let urlPath = String(format: AppConstants.baseURL + AppConstants.Endpoints.productWithId, "\(productId)")
         
         guard let url = URL(string: urlPath) else {
             throw NetworkError.badUrl

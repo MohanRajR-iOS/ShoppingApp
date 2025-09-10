@@ -9,18 +9,18 @@ import SwiftUI
 
 struct ProductsListView: View {
     
-    @State var productsListViewModel = ProductsListViewModel()
+    @StateObject var productsListViewModel = ProductsListViewModel()
     
     var body: some View {
         
         NavigationStack {
             
             if productsListViewModel.isLoading {
-                ProgressView(label: { Text(AppCommon.loading) })
+                ProgressView(label: { Text(AppConstants.loading) })
             }else if let productsList = productsListViewModel.productsList, !productsList.isEmpty {
                 productListView(products: productsList)
             }else {
-                ErrorMessageView(message: AppCommon.Error.noProductsFound)
+                ErrorMessageView(message: AppConstants.Error.noProductsFound)
             }
         }.task {
             await productsListViewModel.getAllProducts()
@@ -29,7 +29,7 @@ struct ProductsListView: View {
     }
 }
 
-private func productListView(products: [ProductObject]) -> some View {
+private func productListView(products: [ProductModel]) -> some View {
     
     List(products, id: \.id) { product in
         NavigationLink(value: product.id) {
@@ -59,7 +59,7 @@ private func productListView(products: [ProductObject]) -> some View {
             }
         }
     }
-    .navigationTitle(AppCommon.ProductListTitle)
+    .navigationTitle(AppConstants.ProductListTitle)
     .navigationDestination(for: Int.self) { productID in
         ProductDetailView(productId: productID)
     }
