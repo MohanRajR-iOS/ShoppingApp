@@ -39,10 +39,8 @@ struct ProductDetailView: View {
                 ErrorMessageView(message: AppConstants.Error.unableToFetchData
                 )
             }
-        }.onAppear {
-            Task {
-                await productDetailViewModel.getProductDetails(productId: productId)
-            }
+        }.task {
+            await productDetailViewModel.getProductDetails(productId: productId)
         }
     }
 }
