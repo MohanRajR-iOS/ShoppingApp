@@ -19,17 +19,16 @@ struct ProductDetailView: View {
             
             if productDetailViewModel.isLoading {
                 ProgressView(label: { Text(AppCommon.loading) })
-            }else if productDetailViewModel.productDetail != nil {
+            }else if let productDetail = productDetailViewModel.productDetail {
                 
                 ScrollView {
                     VStack(spacing: 20) {
                         
-                        ProductHeaderView(image: productDetailViewModel.productDetail?.image ?? "")
+                        ProductHeaderView(image: productDetail.image)
                         
-                        ProductContentView(title: productDetailViewModel.productDetail?.title ?? "", description: productDetailViewModel.productDetail?.summary ?? "", rating: productDetailViewModel.productDetail?.rating.rate ?? 0.0, category: productDetailViewModel.productDetail?.category ?? "", count: productDetailViewModel.productDetail?.rating.count ?? 0)
+                        ProductContentView(productDetail: productDetail)
                         
-                        ProductBottomView(price: productDetailViewModel.productDetail?.price ?? 0.0)
-                        
+                        ProductBottomView(price: productDetail.price)
                     }
                     .padding()
                     .navigationTitle(AppCommon.ProductDetailTitle)
@@ -78,17 +77,13 @@ struct ProductHeaderView: View {
 
 struct ProductContentView: View {
     
-    let title: String
-    let description: String
-    let rating: Double
-    let category: String
-    let count: Int
+    let productDetail: ProductDetailObject
     
     var body: some View {
         
         VStack(alignment: .leading) {
             HStack {
-                Text(category.capitalized)
+                Text(productDetail.category.capitalized)
                     .applyCustomModifier(font: .subheadline, foregroundColor: .gray)
                 Spacer()
                 Image(systemName: AppCommon.Images.ratingImage)
@@ -96,16 +91,16 @@ struct ProductContentView: View {
                     .frame(width: 20, height: 20)
                     .foregroundColor(.yellow)
                 
-                Text("\(rating, specifier: "%.1f")(\(count))")
+                Text("\(productDetail.rating.rate, specifier: "%.1f")(\(productDetail.rating.count))")
                     .applyCustomModifier(font: .subheadline, foregroundColor: .gray)
             }
             .padding(.bottom, 5)
             
-            Text(title)
+            Text(productDetail.title)
                 .applyCustomModifier(font: .title2, fontWeight: .medium)
                 .padding(.bottom, 5)
             
-            Text(description)
+            Text(productDetail.summary)
                 .applyCustomModifier(font: .subheadline, fontWeight: .regular, foregroundColor: .gray)
             
         }

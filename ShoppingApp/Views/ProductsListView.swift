@@ -65,42 +65,6 @@ private func productListView(products: [ProductObject]) -> some View {
     }
 }
 
-
-private func productView(product: ProductObject) -> some View {
-    
-    HStack {
-        
-            AsyncImage(url: URL(string: product.image)) { image in
-                image
-                    .resizable()
-                    .scaledToFit()
-            } placeholder: {
-                ProgressView()
-            }
-            .frame(width: 100, height: 100)
-        
-        VStack(alignment: .leading) {
-            
-            Text(product.title)
-                .bold()
-                .lineLimit(2)
-            
-            Text(product.category.capitalized)
-                .font(.caption)
-                .foregroundColor(.secondary)
-                .lineLimit(2)
-            Spacer()
-            Divider()
-            
-        }
-        
-    }
-    .padding()
-    .frame(maxWidth: .infinity, alignment: .leading)
-    
-    
-}
-
 #Preview {
     ProductsListView()
 }
