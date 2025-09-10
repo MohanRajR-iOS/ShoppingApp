@@ -8,37 +8,38 @@
 import SwiftUI
 
 struct ProductDetailView: View {
-    
+
     var productId: Int
-    
+
     @StateObject var productDetailViewModel = ProductDetailViewModel()
-    
+
     var body: some View {
-        
+
         Group {
-            
+
             if productDetailViewModel.isLoading {
                 ProgressView(label: { Text(AppConstants.loading) })
-            }else if let productDetail = productDetailViewModel.productDetail {
-                
+            } else if let productDetail = productDetailViewModel.productDetail {
+
                 ScrollView {
                     VStack(spacing: 20) {
-                        
+
                         ProductHeaderView(image: productDetail.image)
-                        
+
                         ProductContentView(productDetail: productDetail)
-                        
+
                         ProductBottomView(price: productDetail.price)
                     }
                     .padding()
                     .navigationTitle(AppConstants.ProductDetailTitle)
                     .navigationBarTitleDisplayMode(.inline)
                 }
-                
-            }else {
-                ErrorMessageView(message: AppConstants.Error.unableToFetchData)
+
+            } else {
+                ErrorMessageView(message: AppConstants.Error.unableToFetchData
+                )
             }
-        }.onAppear{
+        }.onAppear {
             Task {
                 await productDetailViewModel.getProductDetails(productId: productId)
             }

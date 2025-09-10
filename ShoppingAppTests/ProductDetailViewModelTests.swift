@@ -9,7 +9,7 @@ import XCTest
 @testable import ShoppingApp
 
 final class ProductDetailViewModelTests: XCTestCase {
-    
+
     var viewModel: ProductDetailViewModel!
     var mockService: MockProductsService!
 
@@ -18,7 +18,7 @@ final class ProductDetailViewModelTests: XCTestCase {
         mockService = MockProductsService()
         viewModel = ProductDetailViewModel(service: mockService)
     }
-    
+
     override func tearDown() {
         viewModel = nil
         mockService = nil
@@ -27,29 +27,28 @@ final class ProductDetailViewModelTests: XCTestCase {
 
     func testErrorMessage() {
         // Check default error message
-        XCTAssertEqual(viewModel.errorMessage, AppCommon.Error.defaultErrorMessage)
+        XCTAssertEqual(viewModel.errorMessage, AppConstants.Error.defaultErrorMessage)
 
         // When there is an error
         viewModel.error = NetworkError.badResponse
-        XCTAssertEqual(viewModel.errorMessage, AppCommon.Error.unableToFetchData)
+        XCTAssertEqual(viewModel.errorMessage, AppConstants.Error.unableToFetchData)
     }
 
     func testFetchProductDetailsSuccess() async {
-        
-        let mockProduct = ProductDetailObject(id: 222,
+
+        let mockProduct = ProductDetailModel(id: 222,
                                               title: "Fjallraven - Foldsack No. 1 Backpack, Fits 15 Laptops",
                                               price: 109.95,
-                                              summary: "Your perfect pack for everyday use and walks in the forest. Stash your laptop (up to 15 inches) in the padded sleeve, your everyday",
+                                              summary: "Your perfect pack for everyday use and walks in the forest.",
                                               category: "men's clothing",
                                               image: "https://fakestoreapi.com/img/81fPKd-2AYL._AC_SL1500_t.png",
-                                              rating: RatingObject(rate: 3.9, count: 120))
-        
-        
+                                              rating: RatingModel(rate: 3.9, count: 120))
+
         mockService.productDetail = mockProduct
         viewModel = ProductDetailViewModel(service: mockService)
-        
+
         await viewModel.getProductDetails(productId: 1)
-        
+
         XCTAssertEqual(viewModel.productDetail?.id, mockProduct.id)
         XCTAssertEqual(viewModel.productDetail?.title, mockProduct.title)
         XCTAssertEqual(viewModel.productDetail?.price, mockProduct.price)
@@ -61,12 +60,12 @@ final class ProductDetailViewModelTests: XCTestCase {
     }
 
     func testFetchProductDetailsFailure() async {
-        
+
         mockService.shouldThrowError = true
         viewModel = ProductDetailViewModel(service: mockService)
-        
+
         await viewModel.getProductDetails(productId: 1)
-        
+
         XCTAssertFalse(viewModel.isLoading)
         XCTAssertNotNil(viewModel.error)
         XCTAssertNil(viewModel.productDetail)

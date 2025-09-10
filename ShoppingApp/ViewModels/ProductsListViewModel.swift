@@ -1,5 +1,5 @@
 //
-//  ProductViewModel.swift
+//  ProductsListViewModel.swift
 //  ShoppingApp
 //
 //  Created by Mohan raj on 05/09/25.
@@ -7,13 +7,12 @@
 
 import Foundation
 
-@MainActor
 class ProductsListViewModel: ObservableObject {
-    
+
     @Published var productsList: [ProductModel]?
     @Published var isLoading: Bool = true
     @Published var error: Error?
-    
+
     var errorMessage: String {
         if productsList?.isEmpty == true {
             AppConstants.Error.noProductsFound
@@ -23,23 +22,23 @@ class ProductsListViewModel: ObservableObject {
             AppConstants.Error.defaultErrorMessage
         }
     }
-    
+
     private let service: ProductsServiceProtocol
 
     init(service: ProductsServiceProtocol = ProductsServiceManager()) {
         self.service = service
     }
-     
+
      // MARK: - Get Products List from API
-    
-    func getAllProducts() async  {
-        
+
+  @MainActor  func getAllProducts() async {
+
         do {
             productsList = try await service.fetchProducts()
         } catch {
             self.error = error
         }
         isLoading = false
-        
+
     }
 }

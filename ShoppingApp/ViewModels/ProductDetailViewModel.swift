@@ -7,13 +7,12 @@
 
 import Foundation
 
-@MainActor
 class ProductDetailViewModel: ObservableObject {
-    
+
     @Published var productDetail: ProductDetailModel?
     @Published var isLoading: Bool = true
     @Published var error: Error?
-    
+
     var errorMessage: String {
         if error != nil {
             AppConstants.Error.unableToFetchData
@@ -21,20 +20,20 @@ class ProductDetailViewModel: ObservableObject {
             AppConstants.Error.defaultErrorMessage
         }
     }
-    
+
     private let service: ProductsServiceProtocol
 
     init(service: ProductsServiceProtocol = ProductsServiceManager()) {
         self.service = service
     }
-    
+
     // MARK: - Get Product details from API
-    
-      func getProductDetails(productId: Int) async  {
-        
+
+    @MainActor  func getProductDetails(productId: Int) async {
+
         do {
             productDetail = try await service.fetchProductDetail(productId: productId)
-        }catch {
+        } catch {
             self.error = error
         }
         isLoading = false

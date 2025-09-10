@@ -1,5 +1,5 @@
 //
-//  ProductDetailObject.swift
+//  ProductDetailModel.swift
 //  ShoppingApp
 //
 //  Created by Mohan raj on 05/09/25.
@@ -8,18 +8,17 @@
 import Foundation
 import SwiftData
 
-
-// MARK: - ProductDetailObject
+// MARK: - ProductDetailModel
 @Model
 final class ProductDetailModel: Sendable {
-    
+
     @Attribute(.unique) var id: Int
     var title: String
     var price: Double
     var summary: String
     var category: String
     var image: String
-    
+
     @Relationship(deleteRule: .cascade) var rating: RatingModel
 
     init(id: Int, title: String, price: Double, summary: String, category: String, image: String, rating: RatingModel) {
@@ -30,18 +29,5 @@ final class ProductDetailModel: Sendable {
         self.category = category
         self.image = image
         self.rating = rating
-    }
-}
-
-// MARK: - RatingObject
-@Model
-final class RatingModel  {
-    
-    var rate: Double
-    var count: Int
-    
-    init(rate: Double, count: Int) {
-        self.rate = rate
-        self.count = count
     }
 }

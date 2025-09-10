@@ -8,23 +8,22 @@
 import SwiftUI
 
 struct ProductBottomView: View {
-    
+
     let price: Double
     @State private var showAlert = false
-    
+
     var body: some View {
         HStack {
             VStack(alignment: .leading) {
-                
+
                 Text(AppConstants.ProductTotalPrice)
-                    .applyCustomModifier(font: .title3, foregroundColor: .gray)
-                
+                    .applyCustomModifier(font: .title3, fontWeight: .medium, foregroundColor: .gray)
+
                 Text("$\(String(price))")
-                    .applyCustomModifier(font: .title2, fontWeight: .medium)
+                    .applyCustomModifier(font: .title2, fontWeight: .medium, foregroundColor: .primary)
             }
             Spacer()
             Button(action: {
-                print("Add to cart clicked")
                 showAlert = true
             }, label: {
                 HStack(spacing: 12) {
@@ -32,7 +31,7 @@ struct ProductBottomView: View {
                         .resizable()
                         .frame(width: 25, height: 25)
                         .foregroundColor(.white)
-                    
+
                     Text(AppConstants.ProductAddCart)
                         .applyCustomModifier(font: .title2, fontWeight: .medium, foregroundColor: .white)
                 }

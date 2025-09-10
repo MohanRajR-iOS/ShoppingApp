@@ -8,16 +8,16 @@
 import SwiftUI
 
 struct ProductHeaderView: View {
-    
+
     let image: String
-    
+
     var body: some View {
-        
+
         ZStack {
             Rectangle()
                 .fill(.thinMaterial)
                 .frame(height: 250)
-            
+
             AsyncImage(url: URL(string: image)) { image in
                 image
                     .resizable()
@@ -27,11 +27,10 @@ struct ProductHeaderView: View {
             }
             .frame(height: 250)
         }
-        
+
     }
 }
 
 #Preview {
     ProductHeaderView(image: "")
 }
-
